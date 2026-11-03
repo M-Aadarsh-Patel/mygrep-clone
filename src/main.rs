@@ -1,4 +1,6 @@
-fn start_fetch(pattern: &str, path: &str) -> Result<bool, std::io::Error> {
+use std::{io, process};
+
+fn start_fetch(pattern: &str, path: &str) -> Result<bool, io::Error> {
     let contents = std::fs::read_to_string(path)?;
 
     let mut number_of_lines: u32 = 0;
@@ -10,7 +12,9 @@ fn start_fetch(pattern: &str, path: &str) -> Result<bool, std::io::Error> {
         }
     }
 
-    println!("{}", number_of_lines);
+    if number_of_lines == 0 {
+        return Err(io::Error::other("no match found"));
+    }
     Ok(true)
 }
 
@@ -19,14 +23,17 @@ fn main() {
 
     if arguments.len() < 2 {
         eprintln!("Usage : mygrep <pattern> <file-path>");
-        std::process::exit(2);
+        process::exit(2);
     }
 
     let pattern: &String = &arguments[0];
     let path: &String = &arguments[1];
 
     if let Err(e) = start_fetch(pattern, path) {
-        eprintln!("{}", e);
-        std::process::exit(2);
+        if e.to_string().contains("no match found") {
+            process::exit(1);
+        }
+    } else {
+        process::exit(0);
     }
 }
