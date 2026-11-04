@@ -1,0 +1,7 @@
+  rust with leading spaces
+	rust after a tab
+rust with trailing space 
+   
+
+
+rust after blank lines

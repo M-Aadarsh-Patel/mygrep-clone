@@ -1,0 +1,4 @@
+café rust
+ÿş
+plain rust line
+Ã( broken rust

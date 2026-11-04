@@ -1,0 +1,12 @@
+a.b literal dot
+axb any char
+a*b star
+[rust] brackets
+(rust) parens
+^rust$ anchors
+rust|go pipe
+back\slash
+$HOME dollar
+-i looks like a flag
+-- double dash
+question? plus+ caret^

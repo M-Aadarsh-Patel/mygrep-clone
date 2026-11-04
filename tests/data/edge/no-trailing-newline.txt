@@ -1,0 +1,2 @@
+first line
+rust on the last line
