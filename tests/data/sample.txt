@@ -1,0 +1,6 @@
+Rust is fast
+rust is safe
+Cargo builds the crate
+the borrow checker is strict
+
+Trust the compiler
