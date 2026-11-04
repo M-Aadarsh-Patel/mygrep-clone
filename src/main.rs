@@ -12,10 +12,7 @@ fn start_fetch(pattern: &str, path: &str) -> Result<bool, io::Error> {
         }
     }
 
-    if number_of_lines == 0 {
-        return Err(io::Error::other("no match found"));
-    }
-    Ok(true)
+    Ok(number_of_lines != 0)
 }
 
 fn main() {
@@ -29,11 +26,14 @@ fn main() {
     let pattern: &String = &arguments[0];
     let path: &String = &arguments[1];
 
-    if let Err(e) = start_fetch(pattern, path) {
-        if e.to_string().contains("no match found") {
+    match start_fetch(pattern, path) {
+        Ok(true) => process::exit(0),
+        Ok(false) => {
             process::exit(1);
         }
-    } else {
-        process::exit(0);
+        Err(e) => {
+            eprintln!("mygrep: {}: {}", path, e);
+            process::exit(2);
+        }
     }
 }
