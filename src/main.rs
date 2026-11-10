@@ -1,32 +1,21 @@
-use std::{io, process};
-
-fn start_fetch(pattern: &str, path: &str) -> Result<bool, io::Error> {
-    let contents = std::fs::read_to_string(path)?;
-
-    let mut number_of_lines: u32 = 0;
-
-    for i in contents.lines() {
-        if i.contains(pattern) {
-            println!("{}", i);
-            number_of_lines += 1;
-        }
-    }
-
-    Ok(number_of_lines != 0)
-}
+use mygrep::{Config, start_search};
+use std::process;
 
 fn main() {
     let arguments: Vec<String> = std::env::args().skip(1).collect();
 
-    if arguments.len() < 2 {
-        eprintln!("Usage : mygrep <pattern> <file-path>");
-        process::exit(2);
-    }
+    let config = match Config::new(arguments) {
+        Ok(value) => value,
+        Err(e) => {
+            eprintln!("{}", e);
+            process::exit(2);
+        }
+    };
 
-    let pattern: &String = &arguments[0];
-    let path: &String = &arguments[1];
+    let pattern = &config.pattern;
+    let path = &config.path;
 
-    match start_fetch(pattern, path) {
+    match start_search(pattern, path) {
         Ok(true) => process::exit(0),
         Ok(false) => {
             process::exit(1);
